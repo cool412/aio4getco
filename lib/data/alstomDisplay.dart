@@ -9,46 +9,53 @@ class AlstomScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Relay Settings for P442/P444",
+          style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+        ),
+      ),
       body: (new Container(
-        padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+        padding: EdgeInsets.all(15.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("Relay Settings for P442/P444",style: TextStyle(fontSize: 20.0,fontStyle: FontStyle.italic),),
-              SizedBox(height:10.0),
-              Text("Zone-1 Settings"),
-              displyAlstomSettings("Positive Sequence Impedance Z1", alstomDetails.z1.toStringAsFixed(3)),
-              displyAlstomSettings("Fault Resistance (ph-ph) RZ1", alstomDetails.rZ1.toString()),
-              displyAlstomSettings("Fault Resistance (ph-e)REZ1", alstomDetails.rEZ1.toString()),
-              displyAlstomSettings("Zone Operate Time (ms)", alstomDetails.t1.toString()),
-              SizedBox(height:5.0),
-              Text("Zone-2 Settings"),
-              displyAlstomSettings("Positive Sequence Impedance Z2", alstomDetails.z2.toStringAsFixed(3)),
-              displyAlstomSettings("Fault Resistance (ph-ph) RZ2", alstomDetails.rZ2.toString()),
-              displyAlstomSettings("Fault Resistance (ph-e)REZ2", alstomDetails.rEZ2.toString()),
-              displyAlstomSettings("Zone Operate Time (ms)", alstomDetails.t2.toString()),
-              SizedBox(height:5.0),
-              Text("Zone-3 Settings"),
-              displyAlstomSettings("Positive Sequence Impedance Z3", alstomDetails.z3.toStringAsFixed(3)),
-              displyAlstomSettings("Fault Resistance (ph-ph) RZ3", alstomDetails.rZ3.toString()),
-              displyAlstomSettings("Fault Resistance (ph-e)REZ3", alstomDetails.rEZ3.toString()),
-              displyAlstomSettings("Zone Operate Time (ms)", alstomDetails.t3.toString()),
-              SizedBox(height:5.0),
-              Text("Zone-4 Settings"),
-              displyAlstomSettings("Positive Sequence Impedance Z4", alstomDetails.z4.toStringAsFixed(3)),
-              displyAlstomSettings("Fault Resistance (ph-ph) RZ4", alstomDetails.rZ4.toString()),
-              displyAlstomSettings("Fault Resistance (ph-e)REZ4", alstomDetails.rEZ4.toString()),
-              displyAlstomSettings("Zone Operate Time (ms)", alstomDetails.t4.toString()),
-              SizedBox(height:5.0),
-              Text("Residual E/F Compensation"),
-              displyAlstomSettings("Magnitude", alstomDetails.residualCompMangnitude.toStringAsFixed(3)),
-              displyAlstomSettings("Angle", alstomDetails.residualCompAngle.toStringAsFixed(3)),
-              SizedBox(height: 5.0),
-              Text("Line Parameters"),
-              displyAlstomSettings("Line Length", alstomDetails.lineImpedance.toStringAsFixed(3)),
-              displyAlstomSettings("Line Angle", alstomDetails.lineAngle.toStringAsFixed(3)),
+              Text(
+                "Zone-1",
+                style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+              ),
+              SizedBox(height: 3.0),
+              tableZone1(),
+              SizedBox(height: 7.0),
+              Text(
+                "Zone-2 Settings",
+                style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+              ),
+              SizedBox(height: 3.0),
+              tableZone2(),
+              SizedBox(height: 7.0),
+              Text(
+                "Zone-3 Settings",
+                style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+              ),
+              SizedBox(height: 3.0),
+              tableZone3(),
+              SizedBox(height: 7.0),
+              Text(
+                "Zone-4 Settings",
+                style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+              ),
+              SizedBox(height: 3.0),
+              tableZone4(),
+              SizedBox(height: 7.0),
+              Text(
+                "Other Settings",
+                style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+              ),
+              SizedBox(height: 3.0),
+              otherSettings(),
             ],
           ),
         ),
@@ -56,21 +63,253 @@ class AlstomScreen extends StatelessWidget {
     );
   }
 
-   Widget displyAlstomSettings(String displayTag, String value) {
-    return Column(
+  Widget containerString(String text) {
+    return Container(
+      padding: EdgeInsets.all(2.0),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 16.0),
+      ),
+    );
+  }
+
+  Widget tableZone1() {
+    return Table(
+      textDirection: TextDirection.ltr,
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      columnWidths: {
+        0: FractionColumnWidth(0.65),
+        1: FractionColumnWidth(0.05),
+        2: FractionColumnWidth(0.2),
+        3: FractionColumnWidth(0.1),
+      },
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text(displayTag),
-            ),
-            Text(" : "),
-            Text(value)
-          ],
-        ),
+        TableRow(children: [
+          TableCell(child: containerString("Positive Sequence Impedance Z1")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.z1.toStringAsFixed(3)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Fault Resistance (ph-ph) RZ1")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.rZ1.toStringAsFixed(0)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Fault Resistance (ph-e) REZ1")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.rEZ1.toStringAsFixed(0)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Zone-1 Operate Time")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.t1.toStringAsFixed(0)),
+          ),
+          TableCell(child: containerString("ms")),
+        ]),
       ],
     );
   }
 
+  Widget tableZone2() {
+    return Table(
+      textDirection: TextDirection.ltr,
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      columnWidths: {
+        0: FractionColumnWidth(0.65),
+        1: FractionColumnWidth(0.05),
+        2: FractionColumnWidth(0.2),
+        3: FractionColumnWidth(0.1),
+      },
+      children: [
+        TableRow(children: [
+          TableCell(child: containerString("Positive Sequence Impedance Z2")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.z2.toStringAsFixed(3)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Fault Resistance (ph-ph) RZ2")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.rZ2.toStringAsFixed(0)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Fault Resistance (ph-e) REZ2")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.rEZ2.toStringAsFixed(0)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Zone-2 Operate Time")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.t2.toStringAsFixed(0)),
+          ),
+          TableCell(child: containerString("ms")),
+        ]),
+      ],
+    );
+  }
+
+  Widget tableZone3() {
+    return Table(
+      textDirection: TextDirection.ltr,
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      columnWidths: {
+        0: FractionColumnWidth(0.65),
+        1: FractionColumnWidth(0.05),
+        2: FractionColumnWidth(0.2),
+        3: FractionColumnWidth(0.1),
+      },
+      children: [
+        TableRow(children: [
+          TableCell(child: containerString("Positive Sequence Impedance Z3")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.z3.toStringAsFixed(3)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Fault Resistance (ph-ph) RZ3")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.rZ3.toStringAsFixed(0)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Fault Resistance (ph-e) REZ3")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.rEZ3.toStringAsFixed(0)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Zone-3 Operate Time")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.t3.toStringAsFixed(0)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+      ],
+    );
+  }
+
+  Widget tableZone4() {
+    return Table(
+      textDirection: TextDirection.ltr,
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      columnWidths: {
+        0: FractionColumnWidth(0.65),
+        1: FractionColumnWidth(0.05),
+        2: FractionColumnWidth(0.2),
+        3: FractionColumnWidth(0.1),
+      },
+      children: [
+        TableRow(children: [
+          TableCell(child: containerString("Positive Sequence Impedance Z4")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.z4.toStringAsFixed(3)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Fault Resistance (ph-ph) RZ4")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.rZ4.toStringAsFixed(0)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Fault Resistance (ph-e) REZ4")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.rEZ4.toStringAsFixed(0)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Zone-4 Operate Time")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.t4.toStringAsFixed(0)),
+          ),
+          TableCell(child: containerString("ms")),
+        ]),
+      ],
+    );
+  }
+
+  Widget otherSettings() {
+    return Table(
+      textDirection: TextDirection.ltr,
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      columnWidths: {
+        0: FractionColumnWidth(0.65),
+        1: FractionColumnWidth(0.05),
+        2: FractionColumnWidth(0.2),
+        3: FractionColumnWidth(0.1),
+      },
+      children: [
+        TableRow(children: [
+          TableCell(
+              child: containerString("Residual E/F Compensation Magnitude")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(
+                alstomDetails.residualCompMangnitude.toStringAsFixed(3)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Residual E/F Compensation Angle (Degree)")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(
+                alstomDetails.residualCompAngle.toStringAsFixed(3)),
+          ),
+          TableCell(child: containerString(" ")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Power Swing Delta R")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.deltaR.toStringAsFixed(3)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Power Swing Delta X")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.deltaX.toStringAsFixed(3)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+      ],
+    );
+  }
+
+  
 }

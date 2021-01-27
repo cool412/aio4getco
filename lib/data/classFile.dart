@@ -108,17 +108,30 @@ class AlstomDetails {
       lineAngle,
       residualCompMangnitude,
       residualCompAngle,
+      deltaR,
+      deltaX,
       z1, rZ1, rEZ1, t1,
       z2, rZ2, rEZ2, t2,
       z3, rZ3, rEZ3, t3,
       z4, rZ4, rEZ4, t4;
       AlstomDetails(this.lineImpedance, this.lineAngle, this.residualCompMangnitude, this.residualCompAngle,
+      this.deltaR, this.deltaX,
       this.z1,this.rZ1,this.rEZ1,this.t1,
       this.z2,this.rZ2,this.rEZ2,this.t2,
       this.z3,this.rZ3,this.rEZ3,this.t3,
-      this.z4,this.rZ4,this.rEZ4,this.t4,);
+      this.z4,this.rZ4,this.rEZ4,this.t4);
 }
 
-class SienmensDetails{
-  
+class SiemensDetails{
+  double lineLength, siemensX, ratioReRl, ratioXeXl, lineAngle,
+  xZ1, rZ1, rEZ1, t1,
+  xZ2, rZ2, rEZ2, t2,
+  xZ3, rZ3, rEZ3, t3,
+  xZ4, rZ4, rEZ4, t4;
+  SiemensDetails(this.lineLength, this.lineAngle, this.siemensX, 
+  this.ratioReRl, this.ratioXeXl,
+  this.xZ1, this.rZ1, this.rEZ1,this.t1,
+  this.xZ2, this.rZ2, this.rEZ2,this.t2,
+  this.xZ3, this.rZ3, this.rEZ3,this.t3,
+  this.xZ4, this.rZ4, this.rEZ4,this.t4);
 }

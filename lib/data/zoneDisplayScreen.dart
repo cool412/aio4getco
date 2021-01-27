@@ -1,8 +1,11 @@
 import 'dart:math';
 
+import 'package:aio4getco/data/abbDisplay.dart';
+import 'package:aio4getco/data/alstomDisplay.dart';
 import 'package:aio4getco/data/classFile.dart';
 import 'package:aio4getco/data/conductorImpedanceList.dart';
 import 'package:aio4getco/data/relayPageDisplay.dart';
+import 'package:aio4getco/data/siemensDisplay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -21,6 +24,7 @@ class _ZoneDisplayState extends State<ZoneDisplayScreen> {
 
   bool isLineLengthMoreThen50km = false;
   double lineImepdance,
+      lineLength,
       lineAngle,
       lineImpedance,
       siemensX,
@@ -30,6 +34,7 @@ class _ZoneDisplayState extends State<ZoneDisplayScreen> {
       residualCompAngle;
 
   AlstomDetails _alstomDetails;
+  SiemensDetails _siemensDetails;
 
   static const List<int> _listFaultPh2Ph1 = [4, 5, 6, 6];
   static const List<int> _listFaultPh2Ph2 = [5, 6, 7, 7];
@@ -44,148 +49,41 @@ class _ZoneDisplayState extends State<ZoneDisplayScreen> {
       zone3Number = 3,
       zone4Number = 4;
 
+  List<Widget> _list;
+  PageController controller = PageController();
+
   @override
   void initState() {
     super.initState();
-    double lineLength = widget.detailsObject.getLineLength();
+    lineLength = widget.detailsObject.getLineLength();
     isLineLengthMoreThen50km = lineLength > 50;
     lineAngle = widget.detailsObject.getLineParameter().zPAngle;
     calculatSettings();
+    prepareRelayData();
+    List<ZoneImpedances> zoneList = <ZoneImpedances>[
+      _zone1,
+      _zone2,
+      _zone3,
+      _zone4
+    ];
+
+    _list = <Widget>[
+      RelayPageScreen(zoneList),
+      AlstomScreen(_alstomDetails),
+      ABBScreen(),
+      SiemensScreen(_siemensDetails),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Zome Settings"),
-        ),
-        body: Container(
-          padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: 5.0),
-                Text(
-                  "Zone-1 Settings",
-                  style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.italic),
-                ),
-                SizedBox(height: 5.0),
-                displayZoneSettings(_zone1),
-                SizedBox(height: 5.0),
-                Text(
-                  "Zone-2 Settings",
-                  style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.italic),
-                ),
-                SizedBox(height: 5.0),
-                displayZoneSettings(_zone2),
-                SizedBox(height: 5.0),
-                Text(
-                  "Zone-3 Settings",
-                  style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.italic),
-                ),
-                SizedBox(height: 5.0),
-                displayZoneSettings(_zone3),
-                SizedBox(height: 5.0),
-                Text(
-                  "Zone-4 Settings",
-                  style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.italic),
-                ),
-                SizedBox(height: 5.0),
-                displayZoneSettings(_zone4),
-                SizedBox(height: 10.0),
-                buildButtonContainer(),
-              ],
-            ),
-          ),
-        ));
-  }
-
-  Widget displayZoneSettings(ZoneImpedances zoneSetting) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text("Positive seqence Resistance"),
-            ),
-            Text(" : "),
-            Text(zoneSetting.r1Final.toStringAsFixed(4) ?? "")
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text("Positive seqence Reactaance"),
-            ),
-            Text(" : "),
-            Text(zoneSetting.x1Final.toStringAsFixed(4) ?? ""),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text("Positive seqence Impedance"),
-            ),
-            Text(" : "),
-            Text(zoneSetting.z1Final.toStringAsFixed(4) ?? ""),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text("Zero seqence Resistance "),
-            ),
-            Text(":"),
-            Text(zoneSetting.r0Final.toStringAsFixed(4) ?? ""),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text("Zero seqence Reactance "),
-            ),
-            Text(":"),
-            Text(zoneSetting.x0Final.toStringAsFixed(4) ?? ""),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text("Zero seqence Impedance "),
-            ),
-            Text(":"),
-            Text(zoneSetting.z0Final.toStringAsFixed(4) ?? ""),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text("Fault Resistance (ph-ph) "),
-            ),
-            Text(":"),
-            Text(zoneSetting.rPh2Ph.toString() ?? ""),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text("Fault Resistance (ph-E) "),
-            ),
-            Text(":"),
-            Text(zoneSetting.rPh2E.toString() ?? ""),
-          ],
-        ),
-      ],
+      body: PageView(
+        children: _list,
+        scrollDirection: Axis.horizontal,
+        physics: BouncingScrollPhysics(),
+        controller: controller,
+      ),
     );
   }
 
@@ -200,33 +98,6 @@ class _ZoneDisplayState extends State<ZoneDisplayScreen> {
     _zone4 = calculateZoneSetting(zone4Number);
     lineImpedance = _mainLine.z1Line;
     calcResidualComponenets();
-  }
-
-  Widget buildButtonContainer() {
-    return ButtonBar(children: <Widget>[
-      (RaisedButton(
-        //color: Colors.teal,
-        elevation: 5.0,
-        shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(20.0),
-        ),
-        onPressed: () {
-          prepareRelayData();
-          Navigator.of(context).push(new MaterialPageRoute(
-              builder: (context) => RelayPageScreen(_alstomDetails)));
-        },
-        child: Container(
-          height: 50.0,
-          width: MediaQuery.of(context).size.width,
-          child: Center(
-            child: const Text(
-              'Disply Makewise Settings',
-              //style: TextStyle(color: Colors.white, fontSize: 20.0),
-            ),
-          ),
-        ),
-      ))
-    ]);
   }
 
   LineImpedance calcLineParameter(String line) {
@@ -291,9 +162,8 @@ class _ZoneDisplayState extends State<ZoneDisplayScreen> {
       case zone2Number:
         {
           multiplier = widget.detailsObject.getZoneMultiplier();
-          print(_mainLine.z1Line);
-          print(_nextShortest.z1Line);
-          if (multiplier * _mainLine.z1Line >= (_mainLine.z1Line + _nextShortest.z1Line * 0.8)) {
+          if (multiplier * _mainLine.z1Line >=
+              (_mainLine.z1Line + _nextShortest.z1Line * 0.8)) {
             time = 450;
           } else {
             time = 350;
@@ -350,9 +220,9 @@ class _ZoneDisplayState extends State<ZoneDisplayScreen> {
     double numertorAngle = degrees(atan(numeratorImage / numeratorReal));
     residualCompMagnitude = numertorImpedance / (3 * impedancePositive);
     residualCompAngle = numertorAngle - linePara.zPAngle;
-    siemensX = imageCompCondPositive / ratioCTPT;
-    siemensReRl = (realCompCondZero / realCompCondPositive - 1) / 3;
-    siemensXeXl = (imageCompCondZero / imageCompCondPositive - 1) / 3;
+    siemensX = imageCompCondPositive * ratioCTPT;
+    siemensReRl = ((realCompCondZero / realCompCondPositive) - 1) / 3;
+    siemensXeXl = ((imageCompCondZero / imageCompCondPositive) - 1) / 3;
   }
 
   Future<void> prepareRelayData() async {
@@ -361,6 +231,8 @@ class _ZoneDisplayState extends State<ZoneDisplayScreen> {
         lineAngle,
         residualCompMagnitude,
         residualCompAngle,
+        (0.15 * _zone3.rPh2E).toDouble(),
+        (0.15 * _zone3.x1Final).toDouble(),
         _zone1.z1Final,
         _zone1.rPh2Ph.toDouble(),
         _zone1.rPh2E.toDouble(),
@@ -374,6 +246,29 @@ class _ZoneDisplayState extends State<ZoneDisplayScreen> {
         _zone3.rPh2E.toDouble(),
         _zone3.zoneTime.toDouble(),
         _zone4.z1Final,
+        _zone4.rPh2Ph.toDouble(),
+        _zone4.rPh2E.toDouble(),
+        _zone4.zoneTime.toDouble());
+
+    _siemensDetails = SiemensDetails(
+        lineLength,
+        lineAngle,
+        siemensX,
+        siemensReRl,
+        siemensXeXl,
+        _zone1.x1Final,
+        _zone1.rPh2Ph.toDouble(),
+        _zone1.rPh2E.toDouble(),
+        _zone1.zoneTime.toDouble(),
+        _zone2.x1Final,
+        _zone2.rPh2Ph.toDouble(),
+        _zone2.rPh2E.toDouble(),
+        _zone2.zoneTime.toDouble(),
+        _zone3.x1Final,
+        _zone3.rPh2Ph.toDouble(),
+        _zone3.rPh2E.toDouble(),
+        _zone3.zoneTime.toDouble(),
+        _zone4.x1Final,
         _zone4.rPh2Ph.toDouble(),
         _zone4.rPh2E.toDouble(),
         _zone4.zoneTime.toDouble());
