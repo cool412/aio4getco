@@ -70,7 +70,7 @@ class _ZoneDisplayState extends State<ZoneDisplayScreen> {
     _list = <Widget>[
       RelayPageScreen(zoneList),
       AlstomScreen(_alstomDetails),
-      ABBScreen(),
+      ABBScreen(zoneList, widget.detailsObject.getCtPtRatio()),
       SiemensScreen(_siemensDetails),
     ];
   }

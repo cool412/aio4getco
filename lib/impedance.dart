@@ -3,8 +3,6 @@ import 'package:aio4getco/data/zoneDisplayScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//import 'package:flutter/data/conductorImpedanceList.dart';
-
 import 'data/conductorImpedanceList.dart';
 
 class ImpedanceScreen extends StatefulWidget {
