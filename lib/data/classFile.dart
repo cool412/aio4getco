@@ -110,28 +110,134 @@ class AlstomDetails {
       residualCompAngle,
       deltaR,
       deltaX,
-      z1, rZ1, rEZ1, t1,
-      z2, rZ2, rEZ2, t2,
-      z3, rZ3, rEZ3, t3,
-      z4, rZ4, rEZ4, t4;
-      AlstomDetails(this.lineImpedance, this.lineAngle, this.residualCompMangnitude, this.residualCompAngle,
-      this.deltaR, this.deltaX,
-      this.z1,this.rZ1,this.rEZ1,this.t1,
-      this.z2,this.rZ2,this.rEZ2,this.t2,
-      this.z3,this.rZ3,this.rEZ3,this.t3,
-      this.z4,this.rZ4,this.rEZ4,this.t4);
+      z1,
+      rZ1,
+      rEZ1,
+      t1,
+      z2,
+      rZ2,
+      rEZ2,
+      t2,
+      z3,
+      rZ3,
+      rEZ3,
+      t3,
+      z4,
+      rZ4,
+      rEZ4,
+      t4;
+  AlstomDetails(
+      this.lineImpedance,
+      this.lineAngle,
+      this.residualCompMangnitude,
+      this.residualCompAngle,
+      this.deltaR,
+      this.deltaX,
+      this.z1,
+      this.rZ1,
+      this.rEZ1,
+      this.t1,
+      this.z2,
+      this.rZ2,
+      this.rEZ2,
+      this.t2,
+      this.z3,
+      this.rZ3,
+      this.rEZ3,
+      this.t3,
+      this.z4,
+      this.rZ4,
+      this.rEZ4,
+      this.t4);
 }
 
-class SiemensDetails{
-  double lineLength, siemensX, ratioReRl, ratioXeXl, lineAngle,
-  xZ1, rZ1, rEZ1, t1,
-  xZ2, rZ2, rEZ2, t2,
-  xZ3, rZ3, rEZ3, t3,
-  xZ4, rZ4, rEZ4, t4;
-  SiemensDetails(this.lineLength, this.lineAngle, this.siemensX, 
-  this.ratioReRl, this.ratioXeXl,
-  this.xZ1, this.rZ1, this.rEZ1,this.t1,
-  this.xZ2, this.rZ2, this.rEZ2,this.t2,
-  this.xZ3, this.rZ3, this.rEZ3,this.t3,
-  this.xZ4, this.rZ4, this.rEZ4,this.t4);
+class SiemensDetails {
+  double lineLength,
+      siemensX,
+      ratioReRl,
+      ratioXeXl,
+      lineAngle,
+      xZ1,
+      rZ1,
+      rEZ1,
+      t1,
+      xZ2,
+      rZ2,
+      rEZ2,
+      t2,
+      xZ3,
+      rZ3,
+      rEZ3,
+      t3,
+      xZ4,
+      rZ4,
+      rEZ4,
+      t4;
+  SiemensDetails(
+      this.lineLength,
+      this.lineAngle,
+      this.siemensX,
+      this.ratioReRl,
+      this.ratioXeXl,
+      this.xZ1,
+      this.rZ1,
+      this.rEZ1,
+      this.t1,
+      this.xZ2,
+      this.rZ2,
+      this.rEZ2,
+      this.t2,
+      this.xZ3,
+      this.rZ3,
+      this.rEZ3,
+      this.t3,
+      this.xZ4,
+      this.rZ4,
+      this.rEZ4,
+      this.t4);
+}
+
+class DGDetails {
+  double _h2, _o2, _n2, _ch4, _c2h4, _c2h6, _c2h2, _c3h6c3h8, _co2, _co;
+  DGDetails(this._h2, this._o2, this._n2, this._ch4, this._c2h4, this._c2h6,
+      this._c2h2, this._c3h6c3h8, this._co2, this._co);
+  double getHydrogen() {
+    return _h2;
+  }
+
+  double hetOxygen() {
+    return _o2;
+  }
+
+  double getNitrogen() {
+    return _n2;
+  }
+
+  double getMythen() {
+    return _ch4;
+  }
+
+  double getC2h4() {
+    return _c2h4;
+  }
+
+  double getC2h6() {
+    return _c2h6;
+  }
+
+  double getc2h2() {
+    return _c2h2;
+  }
+
+  double getC3h6C3h8() {
+    return _c3h6c3h8;
+  }
+
+  double getCo2() {
+    return _co2;
+  }
+
+  double getCo() {
+    return _co;
+  }
 }

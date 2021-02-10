@@ -1,6 +1,8 @@
+import 'package:aio4getco/dgResult.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:aio4getco/data/classFile.dart';
 
 class DGanalysisScreen extends StatefulWidget {
   @override
@@ -10,16 +12,6 @@ class DGanalysisScreen extends StatefulWidget {
 class _DGanalysisState extends State<DGanalysisScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  /*var h2Controller = TextEditingController();
-  var o2Controller = TextEditingController();
-  var n2Controller = TextEditingController();
-  var ch4Controller = TextEditingController();
-  var c2h4Controller = TextEditingController();
-  var c2h6Controller = TextEditingController();
-  var c2h2Controller = TextEditingController();
-  var c3h6c3h8Controller = TextEditingController();
-  var co2Controller = TextEditingController();
-  var coController = TextEditingController();*/
   final _h2Text = 'Hydrogen(H2)';
   final _o2Text = 'Oxygen(O2)';
   final _n2Text = 'Nitrogen(N2)';
@@ -49,7 +41,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
         title: new Text("DG Analysis"),
       ),
       body: Container(
-        padding: EdgeInsets.only(left:15.0,right: 15.0,bottom: 15.0),
+        padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -57,7 +49,9 @@ class _DGanalysisState extends State<DGanalysisScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 10.0,),
+                SizedBox(
+                  height: 10.0,
+                ),
                 buildh2Field(),
                 SizedBox(
                   height: 5.0,
@@ -352,7 +346,6 @@ class _DGanalysisState extends State<DGanalysisScreen> {
 
   Widget buildcoField() {
     return TextFormField(
-      //controller: coController,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.number,
       validator: (value) {
@@ -372,7 +365,6 @@ class _DGanalysisState extends State<DGanalysisScreen> {
         labelText: _coText,
         hintStyle: TextStyle(color: Colors.grey, fontSize: 16.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-        //prefixIcon: Icon(Icons.email),
       ),
     );
   }
@@ -390,7 +382,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
             return;
           }
           _formKey.currentState.save();
-          print(_h2Input);
+          /* print(_h2Input);
           print(_o2Input);
           print(_n2Input);
           print(_ch4Input);
@@ -399,8 +391,22 @@ class _DGanalysisState extends State<DGanalysisScreen> {
           print(_c2h2Input);
           print(_c3h6c3h8Input);
           print(_co2Input);
-          print(_coInput);
+          print(_coInput); */
           //_onButtonPressed();
+          DGDetails dgDetails = DGDetails(
+              _h2Input.toDouble(),
+              _o2Input.toDouble(),
+              _n2Input.toDouble(),
+              _ch4Input.toDouble(),
+              _c2h4Input.toDouble(),
+              _c2h6Input.toDouble(),
+              _c2h2Input.toDouble(),
+              _c3h6c3h8Input.toDouble(),
+              _co2Input.toDouble(),
+              _coInput.toDouble());
+              
+          Navigator.of(context).push(new MaterialPageRoute(
+              builder: (context) => DGReportScreen(dgDetails)));
         },
         child: Container(
           height: 50.0,
