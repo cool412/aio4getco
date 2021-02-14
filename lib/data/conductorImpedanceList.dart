@@ -24,3 +24,34 @@ List<ConductorImpedance> initiateConductorData() {
       0.372, 0.3761, 0.286, 1.029, 1.068, 81.439, 74.467));
   return populateList;
 }
+
+class CurveClass {
+  String typeCurve;
+  double kValue, cValue, aValue, pValue;
+
+  CurveClass(
+      this.typeCurve, this.kValue, this.cValue, this.aValue, this.pValue);
+}
+
+List<CurveClass> initiateCurveData() {
+  List<CurveClass> populateList = [];
+  populateList
+      .add(CurveClass("IEC Standard Inverse Time (SI)", 0.14, 0, 0.02, 1));
+  populateList.add(CurveClass("IEC Very Inverse Time (VI)", 13.5, 0, 1, 1));
+  populateList.add(CurveClass("IEC Extremely Inverse Time (EI)", 80, 0, 2, 1));
+  populateList.add(CurveClass("IEC Long Time Inverse", 120, 0, 1, 1));
+  populateList.add(CurveClass(
+      "IEEE Moderately Invertime Time (MI)", 0.0515, 0.114, 0.02, 1));
+  populateList
+      .add(CurveClass("IEEE Very Inverse Time (VI)", 19.61, 0.491, 2, 1));
+  populateList
+      .add(CurveClass("IEEE Extremely Inverse Time (EI)", 28.2, 0.1217, 2, 1));
+  populateList.add(CurveClass("US Time Inverse (CO8)", 5.95, 0.18, 2, 1));
+  populateList.add(
+      CurveClass("US Short Time Inverse (CO2 P20)", 0.02394, 0.01694, 0.02, 1));
+  populateList.add(
+      CurveClass("US Short Time Inverse (CO2 P40)", 0.16758, 0.11858, 0.02, 1));
+  populateList.add(CurveClass("RI", -4.2373, 0, 1, 1.43644));
+
+  return populateList;
+}

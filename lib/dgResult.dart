@@ -11,14 +11,6 @@ class DGReportScreen extends StatefulWidget {
 class _DGReportState extends State<DGReportScreen> {
   bool isDTapplicable = false;
 
-  /* bool isPD = false,
-      isT1 = false,
-      isT2 = false,
-      isT3 = false,
-      isD1 = false,
-      isD2 = false,
-      isDt = false; */
-
   double valueCh4, valueC2h4, valueC2h2;
 
   double _perCh4, _perC2h4, _perC2h2;
@@ -59,16 +51,7 @@ class _DGReportState extends State<DGReportScreen> {
     _perCh4 = 100 * valueCh4 / totalSum;
     _perC2h4 = 100 * valueC2h4 / totalSum;
     _perC2h2 = 100 * valueC2h2 / totalSum;
-    /* isPD = _perCh4 >= 98.0;
-    isT1 = (_perC2h2 <= 4.0 && _perC2h4 <= 20);
-    isT2 = (_perC2h2 <= 4.0 && _perC2h4 > 20.0 && _perC2h4 <= 50);
-    isD1 = (_perC2h2 >= 13.0 && _perC2h4 <= 23);
-    isT3 = _perC2h4 > 50 && _perC2h2 <= 15;
-    isD2 = (23.0 < _perC2h4 && _perC2h4 <= 40.0 && _perC2h2 >= 13.0) ||
-        (_perC2h2 >= 29.0 && _perC2h4 > 40.0);
-    isDt = (_perC2h4 < 40 && _perC2h2 > 4 && _perC2h2 < 13) ||
-        (_perC2h4 > 50 && _perC2h2 > 15 && _perC2h2 < 29) ||
-        (_perC2h4 > 40 && _perC2h4 < 50 && _perC2h2 > 4 && _perC2h4 < 29); */
+    
 
     if (_perCh4 >= 98.0) {
       return "PD: Partial discharges";

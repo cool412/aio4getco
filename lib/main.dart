@@ -1,5 +1,5 @@
-
 import 'package:aio4getco/data/abbDisplay.dart';
+import 'package:aio4getco/idmtCalc.dart';
 import 'package:aio4getco/refCalc.dart';
 import 'package:flutter/material.dart';
 import 'dga.dart';
@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static const String impedaceCalc = "Impedance Calc";
   static const String dgaAnalysis = "DGA";
   static const String refCalc = "REF Calculation";
-
+  static const String idmtCalc = "IDMT Calulation";
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   gridButton('assets/omega.png', impedaceCalc),
                   gridButton('assets/dgaicon.png', dgaAnalysis),
                   gridButton('assets/ref.png', refCalc),
+                  gridButton('assets/ref.png', idmtCalc),
                 ],
               )
             ],
@@ -77,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
       elevation: 5.0,
       onPressed: () {
         _pushToNextActivity(displayText);
-        print('Button presses');
+        //print('Button presses');
       },
       shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(15.0),
@@ -123,6 +124,11 @@ class _MyHomePageState extends State<MyHomePage> {
               new MaterialPageRoute(builder: (context) => RefCalcScreen()));
         }
         break;
+      case idmtCalc:
+        {
+          Navigator.of(context)
+              .push(new MaterialPageRoute(builder: (context) => IDMTScreen()));
+        }
     }
   }
 }
