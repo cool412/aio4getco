@@ -22,6 +22,34 @@ List<ConductorImpedance> initiateConductorData() {
       0.3992, 0.4062, 0.2199, 1.339, 1.3571, 79.378, 80.672));
   populateList.add(ConductorImpedance("220kV ACSR Twin Moose(S/C)", 0.056,
       0.372, 0.3761, 0.286, 1.029, 1.068, 81.439, 74.467));
+  populateList.add(ConductorImpedance("400kV ACSR Twin Moose(S/C)", 0.0298,
+      0.332, 0.3333, 0.16192, 1.24, 1.2505, 84.872, 82.56));
+  populateList.add(ConductorImpedance("400kV ACSR Twin Moose(D/C)", 0.0288,
+      0.30768, 0.309, 0.26752, 1.07376, 1.1065, 84.652, 76.009));
+  populateList.add(ConductorImpedance("400kV AAAC Twin Moose(S/C)", 0.0309,
+      0.3304, 0.3318, 0.16816, 1.2368, 1.2481, 84.649, 82.257));
+  populateList.add(ConductorImpedance("400kV ACSR Zebra Triple(S/C)", 0.0224,
+      0.2992, 0.3, 12.1856, 1.11184, 12.2362, 85.715, 5.213));
+  populateList.add(ConductorImpedance("400kV ACSR Zebra Quad(S/C)", 0.0168,
+      0.2544, 0.2549, 9.1328, 0.9504, 9.1821, 86.221, 5.941));
+  populateList.add(ConductorImpedance("400kV ACSR Moose Quad(S/C)", 0.0147,
+      0.2528, 0.2532, 0.248, 1, 1.0302, 86.679, 76.071));
+  populateList.add(ConductorImpedance("400kV ACSR Moose Quad(D/C)", 0.0147,
+      0.25312, 0.2535, 0.24912, 0.99936, 1.0299, 86.68, 76.002));
+  populateList.add(ConductorImpedance("400kV AAAC Moose Equ. Quad(S/C)", 0.0157,
+      0.26816, 0.2686, 8.512, 1.0016, 8.5707, 6.656, 6.711));
+  populateList.add(ConductorImpedance("400kV Triple AC Snow Bird", 0.01952,
+      0.256, 0.2567, 0.2, 0.8624, 0.8852, 85.639, 76.943));
+  populateList.add(ConductorImpedance("220kV Deer Conductor", 0.08002, 0.4008,
+      0.4087, 0.229, 1.23, 1.2511, 78.709, 79.453));
+  populateList.add(ConductorImpedance("132kV Underground Cable", 0.0495, 0.128,
+      0.137, 0.08, 0.073, 0.108, 68, 42));
+  populateList.add(ConductorImpedance("220kV Underground Cable(1200 mm2)", 0.02,
+      0.13, 0.132, 0.062, 0.77, 0.772, 81.25, 85.39));
+  populateList.add(ConductorImpedance("220kV Underground Cable(400/550 mm2)",
+      0.0615, 0.157, 0.168, 0.12, 0.1, 0.156, 68.6, 39.8));
+  populateList.add(ConductorImpedance("220kV AL 59 Equivalent to Moose", 0.066,
+      0.399, 0.404, 0.198, 1.339, 1.35, 80.6, 81.58));
   return populateList;
 }
 

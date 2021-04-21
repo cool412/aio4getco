@@ -255,7 +255,7 @@ class SiemensScreen extends StatelessWidget {
           TableCell(
             child: containerString(siemensDetails.t4.toStringAsFixed(0)),
           ),
-          TableCell(child: containerString("Ω")),
+          TableCell(child: containerString("ms")),
         ]),
       ],
     );
@@ -311,7 +311,7 @@ class SiemensScreen extends StatelessWidget {
           TableCell(
             child: containerString(siemensDetails.ratioXeXl.toStringAsFixed(4)),
           ),
-          TableCell(child: containerString(" ")),
+          TableCell(child: containerString("°")),
         ]),
       ],
     );

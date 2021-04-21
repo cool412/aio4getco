@@ -1,5 +1,6 @@
-import 'package:aio4getco/data/abbDisplay.dart';
+import 'package:aio4getco/advanceImpedance.dart';
 import 'package:aio4getco/idmtCalc.dart';
+import 'package:aio4getco/listCondParameters.dart';
 import 'package:aio4getco/refCalc.dart';
 import 'package:flutter/material.dart';
 import 'dga.dart';
@@ -34,10 +35,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static const String impedaceCalc = "Impedance Calc";
+  static const String impedaceCalc = "Impedance Calculation";
   static const String dgaAnalysis = "DGA";
   static const String refCalc = "REF Calculation";
   static const String idmtCalc = "IDMT Calulation";
+  static const String listCondImp = "Conductor Impedance";
+  static const String advanceImpCalc = "Advance Impe. Calc.";
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,34 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              GridView.count(
+              SizedBox(
+                height: 5.0,
+              ),
+              buildButtonContainer(impedaceCalc),
+              SizedBox(
+                height: 5.0,
+              ),
+              buildButtonContainer(advanceImpCalc),
+              SizedBox(
+                height: 5.0,
+              ),
+              buildButtonContainer(dgaAnalysis),
+              SizedBox(
+                height: 5.0,
+              ),
+              buildButtonContainer(refCalc),
+              SizedBox(
+                height: 5.0,
+              ),
+              buildButtonContainer(idmtCalc),
+              SizedBox(
+                height: 5.0,
+              ),
+              buildButtonContainer(listCondImp),
+              SizedBox(
+                height: 5.0,
+              ),
+              /* GridView.count(
                 crossAxisCount: 2,
                 primary: false,
                 padding: const EdgeInsets.all(20.0),
@@ -63,8 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   gridButton('assets/dgaicon.png', dgaAnalysis),
                   gridButton('assets/ref.png', refCalc),
                   gridButton('assets/ref.png', idmtCalc),
+                  gridButton('assets/ref.png', listCondImp),
                 ],
-              )
+              ) */
             ],
           ),
         ),
@@ -104,12 +135,43 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget buildButtonContainer(String displayText) {
+    return ButtonBar(children: <Widget>[
+      (RaisedButton(
+        color: Colors.white,
+        elevation: 5.0,
+        shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(20.0),
+        ),
+        onPressed: () {
+          _pushToNextActivity(displayText);
+        },
+        child: Container(
+          height: 50.0,
+          width: MediaQuery.of(context).size.width,
+          child: Center(
+            child: Text(
+              displayText,
+              style: TextStyle(color: Colors.teal, fontSize: 20.0),
+            ),
+          ),
+        ),
+      ))
+    ]);
+  }
+
   void _pushToNextActivity(String selection) {
     switch (selection) {
       case impedaceCalc:
         {
           Navigator.of(context).push(
               new MaterialPageRoute(builder: (context) => ImpedanceScreen()));
+        }
+        break;
+      case advanceImpCalc:
+        {
+          Navigator.of(context).push(
+              new MaterialPageRoute(builder: (context) => AdvanceImpedanceScreen()));
         }
         break;
       case dgaAnalysis:
@@ -129,6 +191,13 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.of(context)
               .push(new MaterialPageRoute(builder: (context) => IDMTScreen()));
         }
+        break;
+      case listCondImp:
+        {
+          Navigator.of(context).push(new MaterialPageRoute(
+              builder: (context) => ListCondParaScreen()));
+        }
+        break;
     }
   }
 }

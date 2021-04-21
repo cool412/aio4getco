@@ -273,6 +273,23 @@ class AlstomScreen extends StatelessWidget {
       },
       children: [
         TableRow(children: [
+          TableCell(child: containerString("Line Impedance")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child:
+                containerString(alstomDetails.lineImpedance.toStringAsFixed(3)),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Line Angle")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(alstomDetails.lineAngle.toStringAsFixed(3)),
+          ),
+          TableCell(child: containerString("°")),
+        ]),
+        TableRow(children: [
           TableCell(
               child: containerString("Residual E/F Compensation Magnitude")),
           TableCell(child: containerString(":")),
@@ -283,7 +300,9 @@ class AlstomScreen extends StatelessWidget {
           TableCell(child: containerString("Ω")),
         ]),
         TableRow(children: [
-          TableCell(child: containerString("Residual E/F Compensation Angle (Degree)")),
+          TableCell(
+              child:
+                  containerString("Residual E/F Compensation Angle (Degree)")),
           TableCell(child: containerString(":")),
           TableCell(
             child: containerString(
@@ -310,6 +329,4 @@ class AlstomScreen extends StatelessWidget {
       ],
     );
   }
-
-  
 }

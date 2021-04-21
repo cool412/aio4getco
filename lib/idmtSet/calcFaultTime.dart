@@ -69,7 +69,7 @@ class _FaultTimeState extends State<FaultTimeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          new Text("Time Delay to Isolate the fault: " + _requiredTime + " s"),
+          new Text("Time Delay to Isolate the fault: " + _requiredTime),
         ],
       ),
     );
@@ -228,7 +228,7 @@ class _FaultTimeState extends State<FaultTimeScreen> {
               ((_selectCurve.kValue / denominatorValue) + _selectCurve.cValue);
 
           setState(() {
-            _requiredTime = timeToBeTaken.toStringAsFixed(2);
+            _requiredTime = timeToBeTaken.toStringAsFixed(2) + " s";
           });
         },
         child: Container(

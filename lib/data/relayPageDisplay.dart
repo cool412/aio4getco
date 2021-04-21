@@ -56,7 +56,7 @@ class _RelayPageState extends State<RelayPageScreen> {
               tableZone(widget.zoneList[2]),
               SizedBox(height: 7.0),
               Text(
-                "Zone-3 Settings",
+                "Zone-4 Settings",
                 style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
               ),
               SizedBox(height: 3.0),
