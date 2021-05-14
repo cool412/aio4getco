@@ -1,5 +1,6 @@
 import 'package:aio4getco/data/classFile.dart';
 import 'package:aio4getco/data/zoneDisplayScreen.dart';
+import 'package:aio4getco/dbHelperFolder/dbProvider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,11 +13,34 @@ class ImpedanceScreen extends StatefulWidget {
 
 class _ImpedanceState extends State<ImpedanceScreen> {
   List<ConductorImpedance> conductList;
+  Future<List<ConductorSqliteData>> sqliteDataList;
 
   @override
   void initState() {
     super.initState();
     conductList = initiateConductorData();
+    getSqliteData();
+  }
+
+  Future getSqliteData() async {
+    List<ConductorSqliteData> sqliteDataList =
+        await DBProvider.db.getConductor();
+    if (sqliteDataList.length == 0) return;
+
+    for (int i = 0; i < sqliteDataList.length; i++) {
+      ConductorSqliteData sqliteData = sqliteDataList[i];
+      conductList.add(new ConductorImpedance(
+          sqliteData.nameConuctor,
+          double.parse(sqliteData.positiveSequenceResistance),
+          double.parse(sqliteData.positiveSequenceReactance),
+          double.parse(sqliteData.positiveSequenceImpedance),
+          double.parse(sqliteData.zeroSequenceResistance),
+          double.parse(sqliteData.zeroSequenceReactance),
+          double.parse(sqliteData.zeroSequenceImpedance),
+          double.parse(sqliteData.positiveSequenceAngle),
+          double.parse(sqliteData.zeroSequenceAngle)));
+    }
+    setState(() {});
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();

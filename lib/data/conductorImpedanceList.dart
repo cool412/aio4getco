@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+/* All for Conductor data. */
+/* Fisr is for Static data stored in application */
+
 class ConductorImpedance {
   String nameConductor;
   double rP, xP, zP, r0, x0, z0, zPAngle, z0Angle;
@@ -52,6 +57,72 @@ List<ConductorImpedance> initiateConductorData() {
       0.399, 0.404, 0.198, 1.339, 1.35, 80.6, 81.58));
   return populateList;
 }
+
+/* Below class is for saving data to sqlite database. */
+
+ConductorSqliteData clientFromJson(String str) {
+  final jsonData = json.decode(str);
+  return ConductorSqliteData.fromMap(jsonData);
+}
+
+String clientToJson(ConductorSqliteData data) {
+  final dyn = data.toMap();
+  return json.encode(dyn);
+}
+
+class ConductorSqliteData {
+  int id;
+  String nameConuctor,
+      positiveSequenceResistance,
+      zeroSequenceResistance,
+      positiveSequenceReactance,
+      zeroSequenceReactance,
+      positiveSequenceImpedance,
+      zeroSequenceImpedance,
+      positiveSequenceAngle,
+      zeroSequenceAngle;
+
+  ConductorSqliteData(
+      {this.id,
+      this.nameConuctor,
+      this.positiveSequenceResistance,
+      this.positiveSequenceReactance,
+      this.positiveSequenceImpedance,
+      this.positiveSequenceAngle,
+      this.zeroSequenceResistance,
+      this.zeroSequenceReactance,
+      this.zeroSequenceImpedance,
+      this.zeroSequenceAngle});
+
+  factory ConductorSqliteData.fromMap(Map<String, dynamic> json) =>
+      new ConductorSqliteData(
+        id: json["id"],
+        nameConuctor: json["conductor_name"],
+        positiveSequenceResistance: json["positiveSequenceResistance"],
+        positiveSequenceReactance: json["positiveSequenceReactance"],
+        positiveSequenceImpedance: json["positiveSequenceImpedance"],
+        positiveSequenceAngle: json["positiveSequenceAngle"],
+        zeroSequenceResistance: json["zeroSequenceResistance"],
+        zeroSequenceReactance: json["zeroSequenceReactance"],
+        zeroSequenceImpedance: json["zeroSequenceImpedance"],
+        zeroSequenceAngle: json["zeroSequenceAngle"],
+      );
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "conductor_name": nameConuctor,
+        "positiveSequenceResistance": positiveSequenceResistance,
+        "positiveSequenceReactance": positiveSequenceReactance,
+        "positiveSequenceImpedance": positiveSequenceImpedance,
+        "positiveSequenceAngle": positiveSequenceAngle,
+        "zeroSequenceResistance": zeroSequenceResistance,
+        "zeroSequenceReactance": zeroSequenceReactance,
+        "zeroSequenceImpedance": zeroSequenceImpedance,
+        "zeroSequenceAngle": zeroSequenceAngle,
+      };
+}
+
+/* Below code is for characteristics curve */
 
 class CurveClass {
   String typeCurve;

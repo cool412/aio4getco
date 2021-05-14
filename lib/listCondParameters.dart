@@ -1,3 +1,5 @@
+import 'package:aio4getco/addNewConductor.dart';
+import 'package:aio4getco/deleteConductor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'data/conductorImpedanceList.dart';
@@ -27,18 +29,63 @@ class _ListCondParaState extends State<ListCondParaScreen> {
       ),
       body: new Container(
         padding: EdgeInsets.all(15.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              buildList4ConductorType(),
-              SizedBox(height: 10.0),
-              containerString(_lineConductor.nameConductor),
-              SizedBox(height: 10.0),
-              buidShowConductorData(),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          //crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SingleChildScrollView(
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    buildList4ConductorType(),
+                    SizedBox(height: 10.0),
+                    containerString(_lineConductor.nameConductor),
+                    SizedBox(height: 10.0),
+                    buidShowConductorData(),
+                    SizedBox(height: 20.0),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          new FloatingActionButton.extended(
+                            heroTag: "btn1",
+                            backgroundColor: Colors.teal[100],
+                            foregroundColor: Colors.black,
+                            isExtended: true,
+                            icon: Icon(Icons.add),
+                            label: Text("Add New Conductor"),
+                            onPressed: () {
+                              Navigator.of(context).push(new MaterialPageRoute(
+                                  builder: (context) =>
+                                      AddNewConductorScreen()));
+                            },
+                          ),
+                          SizedBox(height: 20.0),
+                          FloatingActionButton.extended(
+                            heroTag: "btn2",
+                            onPressed: () {
+                              Navigator.of(context).push(new MaterialPageRoute(
+                                  builder: (context) =>
+                                      DeleteConductorScreen()));
+                            },
+                            backgroundColor: Colors.teal[100],
+                            foregroundColor: Colors.black,
+                            isExtended: true,
+                            icon: Icon(Icons.delete_forever),
+                            label: new Text("Delete Data"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
