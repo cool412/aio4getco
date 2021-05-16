@@ -1,7 +1,6 @@
 import 'package:aio4getco/data/conductorImpedanceList.dart';
 import 'package:aio4getco/dbHelperFolder/dbProvider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DeleteConductorScreen extends StatefulWidget {
@@ -49,11 +48,25 @@ class _DeleteConductorState extends State<DeleteConductorScreen> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               FloatingActionButton.extended(
-                                heroTag: "btn2",
+                                heroTag:
+                                    'delete"${item.nameConuctor}"', //heroTag is very importanat in floating action button. It is required to give different heroTag fo all the floating action button in flutter...
                                 onPressed: () {
-                                  _showMyDialog(item);
-                                  /* DBProvider.db.deleteConductor(item.id);
-                                  setState(() {}); */
+                                  //_showMyDialog(item);
+                                  final snackBar = SnackBar(
+                                    content: Text('Do you want to delete?'),
+                                    action: SnackBarAction(
+                                      label: 'Yes',
+                                      onPressed: () {
+                                        DBProvider.db.deleteConductor(item.id);
+                                        setState(() {});
+                                      },
+                                    ),
+                                  );
+
+                                  // Find the ScaffoldMessenger in the widget tree
+                                  // and use it to show a SnackBar.
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
                                 },
                                 backgroundColor: Colors.teal[200],
                                 foregroundColor: Colors.black,

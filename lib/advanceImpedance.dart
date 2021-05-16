@@ -163,7 +163,6 @@ class _AdvanceImpedanceState extends State<AdvanceImpedanceScreen> {
   void onChangeRadio(int radioValue) {
     setState(() {
       _value = radioValue;
-      //print(_value);
     });
   }
 
@@ -172,6 +171,7 @@ class _AdvanceImpedanceState extends State<AdvanceImpedanceScreen> {
       padding: EdgeInsets.all(5.0),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.blueAccent),
+        borderRadius: BorderRadius.all(Radius.circular(20.0)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

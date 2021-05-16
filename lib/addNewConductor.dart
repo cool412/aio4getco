@@ -1,9 +1,10 @@
+import 'dart:math';
+
 import 'package:aio4getco/data/conductorImpedanceList.dart';
 import 'package:aio4getco/dbHelperFolder/dbProvider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class AddNewConductorScreen extends StatefulWidget {
   @override
@@ -22,6 +23,9 @@ class _AddNewConductorState extends State<AddNewConductorScreen> {
   final _zeroSequenceAngleText = "Z0 Angle";
   final _positiveSequenceAngleText = "Zp Angle";
   final _nameofConductorText = "Please specify name of the conductor";
+  final _ctrText = "CT Ratio";
+  final _ptrText = "PT Ratio";
+  final _lineLengthToBeProtectedText = "Line Length";
 
   double _positiveSequenceResistance,
       _zeroSequenceResistance,
@@ -30,9 +34,31 @@ class _AddNewConductorState extends State<AddNewConductorScreen> {
       _positiveSequenceImpedance,
       _zeroSequenceImpedance,
       _positiveSequenceAngle,
-      _zeroSequenceAngle;
+      _zeroSequenceAngle,
+      _ctr,
+      _ptr,
+      _lineLength;
 
   String _nameOfConductor;
+
+  int selectedValue;
+
+  bool _valueInPrimary, dataSavedToDb;
+
+  onRadioChange(int val) {
+    setState(() {
+      selectedValue = val;
+      FocusScope.of(context).unfocus();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    selectedValue = 1;
+    _valueInPrimary = true;
+    dataSavedToDb = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +78,10 @@ class _AddNewConductorState extends State<AddNewConductorScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    radioButtonContiner(),
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     new Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,13 +186,71 @@ class _AddNewConductorState extends State<AddNewConductorScreen> {
                     SizedBox(
                       height: 10.0,
                     ),
+                    _valueInPrimary ? buildLineLengthField() : Container(),
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     buildFlotingActionButton(context),
+                    SizedBox(
+                      height: 10.0,
+                    ),
                   ],
                 ),
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget radioButtonContiner() {
+    return Container(
+      padding: EdgeInsets.all(5.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.teal[100]),
+        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(right: 5.0, left: 5.0),
+              child: Text("Do you wish to enter primary value?"),
+            ),
+            flex: 2,
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(right: 5.0),
+              child: Column(
+                children: [
+                  RadioListTile(
+                    value: 1,
+                    groupValue: selectedValue,
+                    title: Text("Yes"),
+                    onChanged: (val) {
+                      _valueInPrimary = true;
+                      onRadioChange(val);
+                    },
+                  ),
+                  RadioListTile(
+                    value: 2,
+                    groupValue: selectedValue,
+                    title: Text("No"),
+                    onChanged: (val) {
+                      _valueInPrimary = false;
+                      onRadioChange(val);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            flex: 2,
+          ),
+        ],
       ),
     );
   }
@@ -439,28 +527,326 @@ class _AddNewConductorState extends State<AddNewConductorScreen> {
           return;
         }
         _formKey.currentState.save();
-        var newConductor = ConductorSqliteData(
-            id: 50,
-            nameConuctor: _nameOfConductor,
-            positiveSequenceResistance: _positiveSequenceResistance.toString(),
-            positiveSequenceReactance: _positiveSequenceReactance.toString(),
-            positiveSequenceImpedance: _positiveSequenceImpedance.toString(),
-            positiveSequenceAngle: _positiveSequenceAngle.toString(),
-            zeroSequenceResistance: _zeroSequenceResistance.toString(),
-            zeroSequenceReactance: _zeroSequenceReactance.toString(),
-            zeroSequenceImpedance: _zeroSequenceImpedance.toString(),
-            zeroSequenceAngle: _zeroSequenceAngle.toString());
-        var response = await DBProvider.db.newConductor(newConductor);
-        if (response > 0) {
-          Scaffold.of(context).showSnackBar(
-              SnackBar(content: Text("Conductor added successfully!")));
-          Navigator.pop(context, true);
+        if (_valueInPrimary) {
+          int decimals = 4;
+          int fac = pow(10, decimals);
+
+          //double ratioCtPt = _ctr / _ptr;
+          //double finalMultiplier = 1 / _lineLength;
+          _positiveSequenceResistance =
+              ((_positiveSequenceResistance / _lineLength) * fac)
+                      .roundToDouble() /
+                  fac;
+          _zeroSequenceResistance =
+              ((_zeroSequenceResistance / _lineLength) * fac).roundToDouble() /
+                  fac;
+          _positiveSequenceReactance =
+              ((_positiveSequenceReactance / _lineLength) * fac)
+                      .roundToDouble() /
+                  fac;
+          _zeroSequenceReactance =
+              ((_zeroSequenceReactance / _lineLength) * fac).roundToDouble() /
+                  fac;
+          _positiveSequenceImpedance =
+              ((_positiveSequenceImpedance / _lineLength) * fac)
+                      .roundToDouble() /
+                  fac;
+          _zeroSequenceImpedance =
+              ((_zeroSequenceImpedance) / _lineLength * fac).roundToDouble() /
+                  fac;
+          _showMyDialog();
+        } else if (!_valueInPrimary) {
+          _showMyDialog();
         } else {
-          Scaffold.of(context).showSnackBar(
-              SnackBar(content: Text("Sorry, There is something wrong.")));
-          //show failure message...
+          return;
         }
       },
+    );
+  }
+
+  /* Widget buildCTRPTRLineContainer() {
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(right: 5.0),
+              child: buildCTRField(),
+            ),
+            flex: 2,
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(left: 5.0),
+              child: buildPTRField(),
+            ),
+            flex: 2,
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(left: 5.0),
+              child: buildLineLengthField(),
+            ),
+            flex: 3,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildCTRField() {
+    return TextFormField(
+      //controller: h2Controller,
+      inputFormatters: [
+        WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,2}')),
+      ],
+      keyboardType: TextInputType.numberWithOptions(decimal: true),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Field can not be empty';
+        }
+        double test = double.tryParse(value);
+        if (test == null || test <= 0) {
+          return 'Entered value is invalid';
+        }
+        return null;
+      },
+      onSaved: (value) {
+        _ctr = double.tryParse(value);
+      },
+      decoration: InputDecoration(
+        labelText: _ctrText,
+        hintStyle: TextStyle(color: Colors.grey, fontSize: 16.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+        //prefixIcon: Icon(Icons.email),
+      ),
+    );
+  }
+
+  Widget buildPTRField() {
+    return TextFormField(
+      //controller: h2Controller,
+      inputFormatters: [
+        WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,2}')),
+      ],
+      keyboardType: TextInputType.numberWithOptions(decimal: true),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Field can not be empty';
+        }
+        double test = double.tryParse(value);
+        if (test == null || test <= 0) {
+          return 'Entered value is invalid';
+        }
+        return null;
+      },
+      onSaved: (value) {
+        _ptr = double.tryParse(value);
+      },
+      decoration: InputDecoration(
+        labelText: _ptrText,
+        hintStyle: TextStyle(color: Colors.grey, fontSize: 16.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+        //prefixIcon: Icon(Icons.email),
+      ),
+    );
+  }
+ */
+
+  Widget buildLineLengthField() {
+    return TextFormField(
+      //controller: h2Controller,
+      inputFormatters: [
+        WhitelistingTextInputFormatter(RegExp(r'^\d+\.?\d{0,2}')),
+      ],
+      keyboardType: TextInputType.numberWithOptions(decimal: true),
+      cursorHeight: 20,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Field can not be empty';
+        }
+        double test = double.tryParse(value);
+        if (test == null || test <= 0) {
+          return 'Entered value is invalid';
+        }
+        return null;
+      },
+      onSaved: (value) {
+        _lineLength = double.tryParse(value);
+      },
+      decoration: InputDecoration(
+        labelText: _lineLengthToBeProtectedText,
+        hintStyle: TextStyle(color: Colors.grey, fontSize: 16.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+        //prefixIcon: Icon(Icons.email),
+        suffixText: "km",
+      ),
+    );
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (context) => AlertDialog(
+        title: Text(_valueInPrimary
+            ? "You have entered values in primary secendory equivalent is below"
+            : "Your entered values in secondary are"),
+        content: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              buidShowConductorData(),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                "Do you wish to save?",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Yes'),
+            onPressed: () {
+              saveValueToDb(context);
+              FocusScope.of(context).unfocus();
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: Text('No'),
+            onPressed: () {
+              FocusScope.of(context).unfocus();
+              Navigator.of(context).pop();
+              return;
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  saveValueToDb(BuildContext context) async {
+    var newConductor = ConductorSqliteData(
+        id: 500,
+        nameConuctor: _nameOfConductor,
+        positiveSequenceResistance: _positiveSequenceResistance.toString(),
+        positiveSequenceReactance: _positiveSequenceReactance.toString(),
+        positiveSequenceImpedance: _positiveSequenceImpedance.toString(),
+        positiveSequenceAngle: _positiveSequenceAngle.toString(),
+        zeroSequenceResistance: _zeroSequenceResistance.toString(),
+        zeroSequenceReactance: _zeroSequenceReactance.toString(),
+        zeroSequenceImpedance: _zeroSequenceImpedance.toString(),
+        zeroSequenceAngle: _zeroSequenceAngle.toString());
+    var response = await DBProvider.db.newConductor(newConductor);
+
+    if (response > 0) {
+      setState(() {
+        dataSavedToDb = true;
+      });
+
+      Navigator.pop(context, true);
+    } else {
+      setState(() {
+        dataSavedToDb = false;
+      });
+
+      //show failure message...
+    }
+  }
+
+  Widget buidShowConductorData() {
+    return Table(
+      textDirection: TextDirection.ltr,
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      columnWidths: {
+        0: FractionColumnWidth(0.65),
+        1: FractionColumnWidth(0.05),
+        2: FractionColumnWidth(0.2),
+        3: FractionColumnWidth(0.1),
+      },
+      children: [
+        TableRow(children: [
+          TableCell(child: containerString("Positive Sequence Reactance")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(_positiveSequenceReactance.toString()),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Positive Sequence Resistance")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(_positiveSequenceResistance.toString()),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Positive Sequence Impedance")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(_positiveSequenceImpedance.toString()),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Zero Sequence Reactance")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(_zeroSequenceReactance.toString()),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Zero Sequence Resistance")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(_zeroSequenceResistance.toString()),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Zero Sequence Impedance")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(_zeroSequenceImpedance.toString()),
+          ),
+          TableCell(child: containerString("Ω")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Positive Sequence Angle")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(_positiveSequenceAngle.toString()),
+          ),
+          TableCell(child: containerString("°")),
+        ]),
+        TableRow(children: [
+          TableCell(child: containerString("Zero Sequence Angle")),
+          TableCell(child: containerString(":")),
+          TableCell(
+            child: containerString(_zeroSequenceAngle.toString()),
+          ),
+          TableCell(child: containerString("°")),
+        ]),
+      ],
+    );
+  }
+
+  Widget containerString(String text) {
+    return Container(
+      padding: EdgeInsets.all(2.0),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 16.0,
+        ),
+      ),
     );
   }
 }
