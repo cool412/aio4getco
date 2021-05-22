@@ -184,13 +184,40 @@ class _AdvanceImpedanceState extends State<AdvanceImpedanceScreen> {
                   fontStyle: FontStyle.italic, color: Colors.blueAccent),
             ),
           ),
-          new Row(
-            children: [
-              new Radio(value: 0, groupValue: _value, onChanged: onChangeRadio),
-              new Text("Hybrid Conductor"),
-              new Radio(value: 1, groupValue: _value, onChanged: onChangeRadio),
-              new Text("Custome data"),
-            ],
+          new Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.all(5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new Expanded(
+                  child: Container(
+                    child: Radio(
+                        value: 0, groupValue: _value, onChanged: onChangeRadio),
+                  ),
+                  flex: 1,
+                ),
+                new Expanded(
+                  child: Container(
+                    child: Text("Hybrid Conductor"),
+                  ),
+                  flex: 2,
+                ),
+                new Expanded(
+                  child: Container(
+                    child: Radio(
+                        value: 1, groupValue: _value, onChanged: onChangeRadio),
+                  ),
+                  flex: 1,
+                ),
+                new Expanded(
+                  child: Container(
+                    child: Text("Custome data"),
+                  ),
+                  flex: 2,
+                ),
+              ],
+            ),
           ),
           _value == 1 ? buildLineLengthField() : buidHybridConductorContainer(),
           SizedBox(

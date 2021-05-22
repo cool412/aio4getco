@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:aio4getco/data/classFile.dart';
 
+
 class DGanalysisScreen extends StatefulWidget {
   @override
   _DGanalysisState createState() => _DGanalysisState();
@@ -34,8 +35,14 @@ class _DGanalysisState extends State<DGanalysisScreen> {
       _c2h2Input;
 
   @override
+  void initState() {
+    super.initState();
+    //Function eq = const ListEquality().equals;
+    //print(eq([1, 'two', 3], [1, 'two',4]));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: new Text("DG Analysis"),
@@ -49,49 +56,35 @@ class _DGanalysisState extends State<DGanalysisScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 10.0,
+                SizedBox(height: 10.0),
+                /* Text(
+                  " Please enter 0.01 for GAS value 0.",
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: Colors.redAccent,
+                  ),
                 ),
+                SizedBox(height: 5.0), */
                 buildh2Field(),
-                SizedBox(
-                  height: 5.0,
-                ),
+                SizedBox(height: 5.0),
                 buildo2Field(),
-                SizedBox(
-                  height: 5.0,
-                ),
+                SizedBox(height: 5.0),
                 buildn2Field(),
-                SizedBox(
-                  height: 5.0,
-                ),
+                SizedBox(height: 5.0),
                 buildch4Field(),
-                SizedBox(
-                  height: 5.0,
-                ),
+                SizedBox(height: 5.0),
                 buildc2h4Field(),
-                SizedBox(
-                  height: 5.0,
-                ),
+                SizedBox(height: 5.0),
                 buildc2h6Field(),
-                SizedBox(
-                  height: 5.0,
-                ),
+                SizedBox(height: 5.0),
                 buildc2h2Field(),
-                SizedBox(
-                  height: 5.0,
-                ),
+                SizedBox(height: 5.0),
                 buildc3h6c3h8Field(),
-                SizedBox(
-                  height: 5.0,
-                ),
+                SizedBox(height: 5.0),
                 buildco2Field(),
-                SizedBox(
-                  height: 5.0,
-                ),
+                SizedBox(height: 5.0),
                 buildcoField(),
-                SizedBox(
-                  height: 5.0,
-                ),
+                SizedBox(height: 5.0),
                 buildButtonContainer(),
               ],
             ),
@@ -111,7 +104,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
           return 'Field can not be empty';
         }
         int test = int.tryParse(value);
-        if (test == null || test <= 0) {
+        if (test == null || test < 0) {
           return 'Entered value is invalid';
         }
         return null;
@@ -138,7 +131,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
           return 'Field can not be empty';
         }
         int test = int.tryParse(value);
-        if (test == null || test <= 0) {
+        if (test == null || test < 0) {
           return 'Entered value is invalid';
         }
         return null;
@@ -165,7 +158,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
           return 'Field can not be empty';
         }
         int test = int.tryParse(value);
-        if (test == null || test <= 0) {
+        if (test == null || test < 0) {
           return 'Entered value is invalid';
         }
         return null;
@@ -192,7 +185,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
           return 'Field can not be empty';
         }
         int test = int.tryParse(value);
-        if (test == null || test <= 0) {
+        if (test == null || test < 0) {
           return 'Entered value is invalid';
         }
         return null;
@@ -219,7 +212,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
           return 'Field can not be empty';
         }
         int test = int.tryParse(value);
-        if (test == null || test <= 0) {
+        if (test == null || test < 0) {
           return 'Entered value is invalid';
         }
         return null;
@@ -246,7 +239,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
           return 'Field can not be empty';
         }
         int test = int.tryParse(value);
-        if (test == null || test <= 0) {
+        if (test == null || test < 0) {
           return 'Entered value is invalid';
         }
         return null;
@@ -273,7 +266,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
           return 'Field can not be empty';
         }
         int test = int.tryParse(value);
-        if (test == null || test <= 0) {
+        if (test == null || test < 0) {
           return 'Entered value is invalid';
         }
         return null;
@@ -300,7 +293,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
           return 'Field can not be empty';
         }
         int test = int.tryParse(value);
-        if (test == null || test <= 0) {
+        if (test == null || test < 0) {
           return 'Entered value is invalid';
         }
         return null;
@@ -327,7 +320,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
           return 'Field can not be empty';
         }
         int test = int.tryParse(value);
-        if (test == null || test <= 0) {
+        if (test == null || test < 0) {
           return 'Entered value is invalid';
         }
         return null;
@@ -353,7 +346,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
           return 'Field can not be empty';
         }
         int test = int.tryParse(value);
-        if (test == null || test <= 0) {
+        if (test == null || test < 0) {
           return 'Entered value is invalid';
         }
         return null;
@@ -404,7 +397,7 @@ class _DGanalysisState extends State<DGanalysisScreen> {
               _c3h6c3h8Input.toDouble(),
               _co2Input.toDouble(),
               _coInput.toDouble());
-              
+
           Navigator.of(context).push(new MaterialPageRoute(
               builder: (context) => DGReportScreen(dgDetails)));
         },

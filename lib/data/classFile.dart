@@ -205,7 +205,7 @@ class DGDetails {
     return _h2;
   }
 
-  double hetOxygen() {
+  double getOxygen() {
     return _o2;
   }
 
